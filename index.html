@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crypto Converter</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="/dist/output.css" rel="stylesheet" />
+    <script src="main.js"></script>
+  </head>
+  <body class="flex justify-center align-middle p-20">
+    <div class="bg-green-500">
+      <h1>Crypto Converter</h1>
+      <label for="cryptoSelect">Select Cryptocurrency:</label>
+      <select id="cryptoSelect">
+        <option value="">Select a cryptocurrency</option>
+      </select>
+      <br />
+      <label for="cryptoAmount">Enter the amount:</label>
+      <input type="number" id="cryptoAmount" step="any" placeholder="Amount" />
+      <br />
+      <br />
+      <label for="targetCurrencySelect">Select Target Currency:</label>
+      <select id="targetCurrencySelect">
+        <option value="">Select a currency</option>
+      </select>
+      <br />
+      <button id="convertButton" onclick="performConversion()">
+        Convert to Fiat
+      </button>
+      <button id="toggleButton" onclick="toggleConversion()">
+        Toggle Conversion
+      </button>
+      <br />
+      <h2>Conversion Result:</h2>
+      <input
+        type="number"
+        id="result"
+        step="any"
+        placeholder="result"
+        readonly
+      />
+    </div>
+  </body>
+</html>
