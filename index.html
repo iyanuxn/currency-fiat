@@ -12,18 +12,29 @@
     >
       <img src="./assets/logo.svg" alt="" srcset="" class="w-7" />
       <div
-        class="border border-neutral-200 rounded-lg px-3 w-[30vw] h-12 flex items-center justify-between"
+        class="border border-neutral-200 rounded-lg w-[30vw] h-12 flex items-center justify-between"
       >
-        <div>
-          <button class="w-full text-start">Select Crypto</button>
-          <div id="cryptoSelect" class="hidden"></div>
+        <div class="w-full h-full">
+          <button
+            id="cryptoSelectBtn"
+            onclick="toggleCryptoSelect()"
+            class="w-full h-full text-start pl-3"
+          >
+            Select Crypto
+          </button>
+          <div
+            id="cryptoSelect"
+            class="bg-white hidden flex-col gap-2 shadow-md border border-neutral-200 rounded-lg h-72 overflow-y-scroll mt-3 absolute"
+          >
+            <div id="options"></div>
+          </div>
         </div>
         <input
           type="number"
           id="cryptoAmount"
           step="any"
           placeholder="Amount"
-          class="w-[10vw] pl-4 border-l border-neutral-200 outline-none h-full font-bold"
+          class="w-[10vw] px-3 border-l border-neutral-200 outline-none h-full font-bold"
         />
       </div>
 
@@ -31,18 +42,34 @@
         Toggle Conversion
       </button>
 
-      <div class="bg-slate-700">
-        <select id="targetCurrencySelect">
-          <option value="">Select a currency</option>
-        </select>
+      <div
+        class="border border-neutral-200 rounded-lg w-[30vw] h-12 flex items-center justify-between"
+      >
+        <div class="w-full h-full">
+          <button
+            id="targetCurrencySelectBtn"
+            onclick="toggleTargetCurrencySelect()"
+            class="w-full h-full text-start pl-3"
+          >
+            Select Currency
+          </button>
+          <div
+            id="targetCurrencySelect"
+            class="bg-white hidden flex-col gap-2 shadow-md border border-neutral-200 rounded-lg h-72 overflow-y-scroll mt-3 absolute"
+          >
+            <div id="options2"></div>
+          </div>
+        </div>
         <input
           type="number"
           id="result"
           step="any"
-          placeholder="result"
+          placeholder="Amount"
           readonly
+          class="w-[10vw] px-3 border-l border-neutral-200 outline-none h-full font-bold"
         />
       </div>
+
       <button id="convertButton" onclick="performConversion()">
         Convert to Fiat
       </button>

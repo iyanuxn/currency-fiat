@@ -13,3 +13,21 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 0.6vw;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b4b4b4;
+  border-radius: 10vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #919191;
+}
