@@ -47,6 +47,12 @@ async function populateCryptoSelect() {
         "ease-in-out"
       );
       option.textContent = crypto.name;
+      // crypto image
+      const img = document.createElement("img");
+      img.src = crypto.iconUrl;
+      img.classList.add("w-4", "h-4", "inline-block", "mr-2");
+      option.prepend(img);
+
       option.addEventListener("click", () => {
         document.getElementById("cryptoSelect").value = crypto.symbol; // Set the selected value
         document.getElementById(
@@ -75,6 +81,7 @@ async function populateTargetCurrencySelect() {
       "https://api.exchangerate-api.com/v4/latest/USD"
     );
     const data = await response.json();
+    console.log(data);
     const currencies = Object.keys(data.rates);
 
     currencies.forEach((currency) => {
@@ -89,6 +96,8 @@ async function populateTargetCurrencySelect() {
         "ease-in-out"
       );
       option.textContent = currency;
+      // currency image
+      const img = document.createElement("img");
       option.addEventListener("click", () => {
         document.getElementById("targetCurrencySelect").value = currency; // Set the selected value
         document.getElementById(
