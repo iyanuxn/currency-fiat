@@ -76,13 +76,15 @@ async function populateCryptoSelect() {
   }
 }
 
+/*************  ✨ Codeium Command ⭐  *************/
+/******  17c8fd97-6dc2-433c-8464-53b58b0a7c41  *******/
 function createCurrencyOption(currency, imgSrc) {
   const container = document.createElement("div");
   container.classList.add("flex", "items-center");
   
   const img = document.createElement("img");
   img.src = imgSrc;
-  img.classList.add("w-4", "h-4", "mr-2");
+  img.classList.add("w-5", "h-5", "mr-2");
 
   const text = document.createElement("span");
   text.textContent = currency;
