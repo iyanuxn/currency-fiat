@@ -8,69 +8,87 @@
   </head>
   <body class="flex justify-center align-middle p-20">
     <div
-      class="bg-white px-6 py-8 flex flex-col gap-3 items-center rounded-2xl border border-neutral-200 shadow-xl"
+      class="bg-white px-6 py-8 flex flex-col gap-3 items-center rounded-3xl border border-neutral-100 shadow-2xl shadow-neutral-400/20"
     >
-      <img src="./assets/logo.svg" alt="" srcset="" class="w-7" />
-      <div
-        class="border border-neutral-200 rounded-lg w-[30vw] h-12 flex items-center justify-between"
-      >
-        <div class="w-full h-full">
-          <button
-            id="cryptoSelectBtn"
-            onclick="toggleCryptoSelect()"
-            class="w-full h-full text-start pl-3"
-          >
-            Select Crypto
-          </button>
+      <!-- <img src="./assets/logo.svg" alt="" srcset="" class="w-7" /> -->
+      <div class="flex flex-col main-container items-center">
+        <div
+          class="flex items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100"
+        >
           <div
-            id="cryptoSelect"
-            class="bg-white hidden flex-col gap-2 shadow-md border border-neutral-200 rounded-lg h-72 overflow-y-scroll mt-3 absolute"
+            class="bg-white border border-neutral-100 rounded-2xl w-[30vw] h-12 flex items-center justify-between overflow-hidden"
           >
-            <div id="options"></div>
+            <div class="w-full h-full">
+              <button
+                id="cryptoSelectBtn"
+                onclick="toggleCryptoSelect()"
+                class="w-full h-full text-start pl-3 text-sm"
+              >
+                Select Crypto
+              </button>
+              <div
+                id="cryptoSelect"
+                class="bg-white hidden flex-col gap-2 shadow-md border border-neutral-100 rounded-lg h-72 overflow-y-scroll mt-3 absolute z-50"
+              >
+                <div id="options"></div>
+              </div>
+            </div>
+            <input
+              type="number"
+              id="cryptoAmount"
+              step="any"
+              placeholder="Amount"
+              class="w-[10vw] text-right pr-3 text-sm outline-none h-full font-medium"
+            />
           </div>
         </div>
-        <input
-          type="number"
-          id="cryptoAmount"
-          step="any"
-          placeholder="Amount"
-          class="w-[10vw] px-3 border-l border-neutral-200 outline-none h-full font-bold"
-        />
-      </div>
 
-      <button id="toggleButton" onclick="toggleConversion()">
-        Toggle Conversion
-      </button>
-
-      <div
-        class="border border-neutral-200 rounded-lg w-[30vw] h-12 flex items-center justify-between"
-      >
-        <div class="w-full h-full">
-          <button
-            id="targetCurrencySelectBtn"
-            onclick="toggleTargetCurrencySelect()"
-            class="w-full h-full text-start pl-3"
-          >
-            Select Currency
-          </button>
+        <button id="toggleButton" onclick="toggleConversion()" class="-my-3.5 z-20 bg-neutral-50 border border-neutral-100 w-16 h-16 rounded-full flex items-center justify-center">
           <div
-            id="targetCurrencySelect"
-            class="bg-white hidden flex-col gap-2 shadow-md border border-neutral-200 rounded-lg h-72 overflow-y-scroll mt-3 absolute"
+            class="w-12 h-12 rounded-full bg-lime-400 flex items-center justify-center"
           >
-            <div id="options2"></div>
+            <img src="./assets/exchange.svg" alt="" srcset="" class="w-6" />
+          </div>
+        </button>
+
+        <div
+          class="flex items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100"
+        >
+          <div
+            class="bg-white border border-neutral-100 rounded-2xl w-[30vw] h-12 flex items-center justify-between overflow-hidden"
+          >
+            <div class="w-full h-full">
+              <button
+                id="targetCurrencySelectBtn"
+                onclick="toggleTargetCurrencySelect()"
+                class="w-full h-full text-start pl-3 text-sm"
+              >
+                Select Currency
+              </button>
+              <div
+                id="targetCurrencySelect"
+                class="bg-white hidden flex-col gap-2 shadow-md border border-neutral-200 rounded-lg h-72 overflow-y-scroll mt-3 absolute z-50"
+              >
+                <div id="options2"></div>
+              </div>
+            </div>
+            <input
+              type="number"
+              id="result"
+              step="any"
+              placeholder="Amount"
+              readonly
+              class="w-[10vw] text-right pr-3 text-sm outline-none h-full font-medium"
+            />
           </div>
         </div>
-        <input
-          type="number"
-          id="result"
-          step="any"
-          placeholder="Amount"
-          readonly
-          class="w-[10vw] px-3 border-l border-neutral-200 outline-none h-full font-bold"
-        />
       </div>
 
-      <button id="convertButton" onclick="performConversion()">
+      <button
+        class="bg-lime-400 px-6 py-3 rounded-xl w-full text-neutral-800 text-sm font-semibold"
+        id="convertButton"
+        onclick="performConversion()"
+      >
         Convert to Fiat
       </button>
     </div>

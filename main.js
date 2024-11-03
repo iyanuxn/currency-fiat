@@ -2,7 +2,14 @@ const apiKey =
   "47659afe341aa8d88b5916df968b062d17e0371619c47c3c9aaa2ea69ad7bbcd";
 const coinRankingUrl =
   "https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
+
 let isConvertingToFiat = true;
+
+function toggleFlexDirection() {
+  const mainContainer = document.querySelector(".main-container");
+  mainContainer.classList.toggle("flex-col");
+  mainContainer.classList.toggle("flex-col-reverse");
+}
 
 function toggleConversion() {
   isConvertingToFiat = !isConvertingToFiat;
@@ -19,6 +26,8 @@ function toggleConversion() {
     cryptoAmountInput.setAttribute("readonly", true);
     resultInput.removeAttribute("readonly");
   }
+
+  toggleFlexDirection(); // Toggle between flex-col and flex-col-reverse
 }
 
 const coinRankingOptions = {
@@ -46,26 +55,42 @@ async function populateCryptoSelect() {
         "hover:bg-neutral-200",
         "ease-in-out"
       );
-      option.textContent = crypto.name;
-      // crypto image
-      const img = document.createElement("img");
-      img.src = crypto.iconUrl;
-      img.classList.add("w-4", "h-4", "inline-block", "mr-2");
-      option.prepend(img);
+
+      // Create currency option with image
+      const currencyOption = createCurrencyOption(crypto.name, crypto.iconUrl);
+      option.appendChild(currencyOption);
 
       option.addEventListener("click", () => {
+        const buttonContent = createCurrencyOption(crypto.name, crypto.iconUrl);
+        document.getElementById("cryptoSelectBtn").innerHTML = ''; // Clear existing content
+        document.getElementById("cryptoSelectBtn").appendChild(buttonContent);
         document.getElementById("cryptoSelect").value = crypto.symbol; // Set the selected value
-        document.getElementById(
-          "cryptoSelectBtn"
-        ).textContent = `${crypto.name}`;
         toggleCryptoSelect(); // Hide the dropdown after selecting an option
       });
+
       cryptoSelect.appendChild(option);
     });
   } catch (error) {
     console.error(error);
     cryptoSelect.innerHTML = "<div>Error fetching data</div>";
   }
+}
+
+function createCurrencyOption(currency, imgSrc) {
+  const container = document.createElement("div");
+  container.classList.add("flex", "items-center");
+  
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.classList.add("w-4", "h-4", "mr-2");
+
+  const text = document.createElement("span");
+  text.textContent = currency;
+
+  container.appendChild(img);
+  container.appendChild(text);
+
+  return container;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -77,39 +102,62 @@ async function populateTargetCurrencySelect() {
   const targetCurrencySelect = document.getElementById("targetCurrencySelect");
 
   try {
-    const response = await fetch(
+    // Fetch list of all countries and currencies from REST Countries
+    const countriesResponse = await fetch("https://restcountries.com/v3.1/all");
+    const countries = await countriesResponse.json();
+
+    // Fetch supported currencies from the conversion API
+    const ratesResponse = await fetch(
       "https://api.exchangerate-api.com/v4/latest/USD"
     );
-    const data = await response.json();
-    console.log(data);
-    const currencies = Object.keys(data.rates);
+    const ratesData = await ratesResponse.json();
+    const supportedCurrencies = Object.keys(ratesData.rates);
 
-    currencies.forEach((currency) => {
-      const option = document.createElement("option");
-      option.value = currency;
+    const currencyToFlagMap = {};
+
+    // Map supported currencies to their flags
+    countries.forEach((country) => {
+      if (country.currencies) {
+        for (const currencyCode in country.currencies) {
+          if (supportedCurrencies.includes(currencyCode)) {
+            currencyToFlagMap[currencyCode] = country.flags.svg;
+          }
+        }
+      }
+    });
+
+    // Populate the dropdown with only supported currencies
+    supportedCurrencies.forEach((currency) => {
+      const option = document.createElement("div");
       option.classList.add(
         "cursor-pointer",
         "p-2",
         "transition",
         "duration-300",
         "hover:bg-neutral-200",
-        "ease-in-out"
+        "ease-in-out",
+        "flex",
+        "items-center"
       );
-      option.textContent = currency;
-      // currency image
-      const img = document.createElement("img");
+
+      // Special case for USD
+      const imgSrc = currency === "USD" ? "https://flagcdn.com/us.svg" : currencyToFlagMap[currency] || "";
+      const currencyOption = createCurrencyOption(currency, imgSrc);
+      option.appendChild(currencyOption);
+
       option.addEventListener("click", () => {
-        document.getElementById("targetCurrencySelect").value = currency; // Set the selected value
-        document.getElementById(
-          "targetCurrencySelectBtn"
-        ).textContent = `${currency}`;
-        toggleTargetCurrencySelect(); // Hide the dropdown after selecting an option
+        const buttonContent = createCurrencyOption(currency, imgSrc);
+        document.getElementById("targetCurrencySelectBtn").innerHTML = ''; // Clear existing content
+        document.getElementById("targetCurrencySelectBtn").appendChild(buttonContent);
+        document.getElementById("targetCurrencySelect").value = currency;
+        toggleTargetCurrencySelect();
       });
+
       targetCurrencySelect.appendChild(option);
     });
   } catch (error) {
     console.error(error);
-    targetCurrencySelect.innerHTML = "<option>Error fetching data</option>";
+    targetCurrencySelect.innerHTML = "<div>Error fetching data</div>";
   }
 }
 
@@ -125,11 +173,21 @@ function performConversion() {
     .then((response) => response.json())
     .then((data) => {
       const rate = data[targetCurrency];
+
+      // Check if rate is undefined
+      if (!rate) {
+        resultInput.value = "Conversion rate unavailable";
+        return;
+      }
+
       const result = isConvertingToFiat
         ? cryptoAmount * rate
         : parseFloat(resultInput.value) / rate;
 
-      if (isConvertingToFiat) {
+      // Set result with a fixed decimal, or indicate an error if it's NaN
+      if (isNaN(result)) {
+        resultInput.value = "Invalid conversion";
+      } else if (isConvertingToFiat) {
         resultInput.value = result.toFixed(2);
       } else {
         document.getElementById("cryptoAmount").value = result.toFixed(2);
