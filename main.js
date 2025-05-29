@@ -1,7 +1,5 @@
-const apiKey =
-  "47659afe341aa8d88b5916df968b062d17e0371619c47c3c9aaa2ea69ad7bbcd";
-const coinRankingUrl =
-  "https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
+const apiKey = "47659afe341aa8d88b5916df968b062d17e0371619c47c3c9aaa2ea69ad7bbcd";
+const coinRankingUrl = "https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
 
 let isConvertingToFiat = true;
 
@@ -76,8 +74,6 @@ async function populateCryptoSelect() {
   }
 }
 
-/*************  ✨ Codeium Command ⭐  *************/
-/******  17c8fd97-6dc2-433c-8464-53b58b0a7c41  *******/
 function createCurrencyOption(currency, imgSrc) {
   const container = document.createElement("div");
   container.classList.add("flex", "items-center");
@@ -95,13 +91,8 @@ function createCurrencyOption(currency, imgSrc) {
   return container;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  populateCryptoSelect();
-  populateTargetCurrencySelect();
-});
-
 async function populateTargetCurrencySelect() {
-  const targetCurrencySelect = document.getElementById("targetCurrencySelect");
+  const targetCurrencySelect = document.getElementById("options2");
 
   try {
     // Fetch list of all countries and currencies from REST Countries
@@ -109,9 +100,7 @@ async function populateTargetCurrencySelect() {
     const countries = await countriesResponse.json();
 
     // Fetch supported currencies from the conversion API
-    const ratesResponse = await fetch(
-      "https://api.exchangerate-api.com/v4/latest/USD"
-    );
+    const ratesResponse = await fetch("https://api.exchangerate-api.com/v4/latest/USD");
     const ratesData = await ratesResponse.json();
     const supportedCurrencies = Object.keys(ratesData.rates);
 
@@ -169,9 +158,7 @@ function performConversion() {
   const cryptoAmount = document.getElementById("cryptoAmount").value;
   const resultInput = document.getElementById("result");
 
-  fetch(
-    `https://min-api.cryptocompare.com/data/price?fsym=${selectedCrypto}&tsyms=${targetCurrency}&api_key=${apiKey}`
-  )
+  fetch(`https://min-api.cryptocompare.com/data/price?fsym=${selectedCrypto}&tsyms=${targetCurrency}&api_key=${apiKey}`)
     .then((response) => response.json())
     .then((data) => {
       const rate = data[targetCurrency];
@@ -220,3 +207,25 @@ function toggleTargetCurrencySelect() {
     targetCurrencySelect.style.display = "none";
   }
 }
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+  const cryptoSelect = document.getElementById('cryptoSelect');
+  const targetSelect = document.getElementById('targetCurrencySelect');
+  const cryptoBtn = document.getElementById('cryptoSelectBtn');
+  const targetBtn = document.getElementById('targetCurrencySelectBtn');
+  
+  if (!cryptoBtn.contains(event.target) && !cryptoSelect.contains(event.target)) {
+    cryptoSelect.style.display = 'none';
+  }
+  
+  if (!targetBtn.contains(event.target) && !targetSelect.contains(event.target)) {
+    targetSelect.style.display = 'none';
+  }
+});
+
+// Initialize when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  populateCryptoSelect();
+  populateTargetCurrencySelect();
+});
