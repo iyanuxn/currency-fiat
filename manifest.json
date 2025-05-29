@@ -4,18 +4,9 @@
   "version": "1.0",
   "description": "Convert crypto to fiat.",
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "assets/logo.svg",
-      "48": "assets/logo.svg",
-      "128": "assets/logo.svg"
-    }
+    "default_popup": "index.html"
   },
-  "icons": {
-    "16": "assets/logo.svg",
-    "48": "assets/logo.svg",
-    "128": "assets/logo.svg"
-  },
+
   "permissions": [],
   "web_accessible_resources": [
     {
